@@ -18,10 +18,9 @@ img {
 
 iframe{
     top: 60px;
-    width: 220px;
-    height: 170px;
+    max-width: 260px;
+    height: auto;
 }
-
 
 .container_page {
     min-height: 100vh;
@@ -53,11 +52,13 @@ iframe{
     border-radius: 3%;
     color: black;
     font-size: 22px;
-    height: 250px;
-    width: 275px;
+    height: auto;
+    width: 300px;
+    min-height: 250px;
     top: 250px;
     left: 42px;
     margin: 15px;
+    padding: 20px;
     box-shadow: 0 4px 4px 10px rgb(92, 92, 92, 0.3);
     transition: background-color 0.5s ease, transform 0.4s ease;
     
@@ -120,7 +121,6 @@ iframe{
     display: flex;
     justify-content: center;
     align-items: center;
-
 }
 
 #column_red_purple {
