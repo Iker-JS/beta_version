@@ -203,3 +203,9 @@ iframe{
     height: 500px;
 
 }
+/* add class here */
+main{
+    display: flex;
+    align-content: center;
+    justify-content: center;
+}
