@@ -9,31 +9,56 @@ app.use(express.static('public'));
 app.engine('ejs', require('ejs').renderFile);
 app.set('view engine', 'ejs');
 
+var pages;
+const main = 'main_selected_link';
+const secondary = 'secondary_selected_link';
+
+function changeToSecondary(str){
+    pages = {'home': secondary, 'general': secondary, 'assesment': secondary, 'advice': secondary,'community': secondary, 'map': secondary, 'chatbot': secondary};
+
+    pages[str] = main;
+}
+
+console.log(changeToSecondary())
 
 app.route('/').get((req, res) => {
 
-    res.render('home');
+    changeToSecondary('home');
+    res.render('home', {pages});
 
 });
 
 app.get("/general",(req,res) => {
-    res.render('general');
+
+    changeToSecondary('general');
+    res.render('general', {pages});
 });
 
 app.get("/assesment",(req,res) => {
-    res.render('assesment');
+
+    changeToSecondary('assesment');
+    res.render('assesment', {pages});
 });
 
 app.get("/advice",(req,res) => {
-    res.render('advice');
+
+    changeToSecondary('advice');
+    res.render('advice', {pages});
 });
 
 app.get("/community",(req,res) => {
-    res.render('community');
+    changeToSecondary('community');
+    res.render('community', {pages});
 });
 
 app.get("/map",(req,res) => {
-    res.render('map');
+    changeToSecondary('map');
+    res.render('map', {pages});
+});
+
+app.get("/chatbot",(req,res) => {
+    changeToSecondary('chatbot');
+    res.render('chatbot', {pages});
 });
 
 app.listen(3000, ()=>{
