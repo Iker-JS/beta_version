@@ -16,6 +16,25 @@ app.route('/').get((req, res) => {
 
 });
 
+app.get("/general",(req,res) => {
+    res.render('general');
+});
+
+app.get("/assesment",(req,res) => {
+    res.render('assesment');
+});
+
+app.get("/advice",(req,res) => {
+    res.render('advice');
+});
+
+app.get("/community",(req,res) => {
+    res.render('community');
+});
+
+app.get("/map",(req,res) => {
+    res.render('map');
+});
 
 app.listen(3000, ()=>{
 
