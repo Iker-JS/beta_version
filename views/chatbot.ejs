@@ -4,17 +4,61 @@
 
         <div class="chat_bot_container">
             
-            <div class="chat_bot_content_box"></div>
-            
+            <div class="chat_bot_content_box">
+
+                
+                <div id="chat_bot_scrolleables_container">
+                    
+                    <% if(!locals.error) { %>
+                            
+                        
+                        <% if(locals.chatBotMessages && locals.userMessages) { %>
+                            
+                            <% for(var i = 0; i < chatBotMessages.length; i++) { %>
+                                    
+                                        <div id="chat_bot_user_response">                                            
+                                            <div id="chat_bot_user_bubble"><%= userMessages[i] %></div>
+                                        </div>
+
+                                    <div id="chat_bot_response">
+                                        <div id="chat_bot_bubble"><%= chatBotMessages[i] %></div>
+                                    </div>
+                                    
+                                    
+                                  
+
+                                <% }; %>
+
+                    
+                        <% } %>
+
+                        
+                    
+                    <% } %>
+                        
+                        
+                        
+                    </div>
+                    
+                </div>
+
             <div class="chat_bot_footer">
                 
                 <div class="chat_bot_input_container">
-                    <input type="text" id="chat_bot_input_box_text" placeholder="Message">
-                    <button id="chat_bot_input_box_button">Send</button>
+
+
+                    
+                        
+                    <form action="/chat" method="post">
+                        <input type="text" id="chat_bot_input_box_text" name="message" placeholder="Message">
+                        <button type="submit" id="chat_bot_input_box_button">Send</button>
+                    </form>
+                    
+
                 </div>
 
             </div>
-            
+
         </div>
     </main>
 
