@@ -212,35 +212,42 @@ iframe{
 
 
 }
-#chat_bot_response, #chat_bot_user_response{
-    height: auto;
-    width: 250px;
-}
-#chat_bot_user_response{
+
+#chat_bot_responses{
 
     display: flex;
-    justify-content: right;
-    
+    justify-content: center;
+    align-content: space-between;
+
+
 }
 
-#chat_bot_user_bubble{
 
+#chat_bot_user_bubble, #chat_bot_bubble{
+    display: flex;
+    justify-content: right;
+    padding: 20px;
     margin: 10px;
-    min-height: 40px;
     border-radius: 10px;
-    background-color: blue;
-    margin-left: 350px;
+    width: auto;
+    font-weight: bold;
+    background-color: white;
+    justify-content: left;
+    text-align: justify;
+    opacity: 100%;
+    
 }
 
 #chat_bot_bubble{
-    
-    margin: 10px;
-    height: auto;
-    border-radius: 10px;
-    background-color: red;
-
+    margin-right: 380px;
+    border: 5px solid #F5004F;
 }
 
+#chat_bot_user_bubble{
+    border: 5px solid #00bd00;
+    margin-left: 380px;
+    
+}
 /* add class here */
 main{
     display: flex;
