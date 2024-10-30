@@ -263,4 +263,10 @@ p{
     margin-left: 380px;
     
 }
-/* add class here */
+
+
+.stickers_img{
+
+    width: 105px;
+    height: 105px;
+}

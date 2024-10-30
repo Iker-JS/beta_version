@@ -30,10 +30,13 @@ app.set('view engine', 'ejs');
 
 var pages;
 var pageName;
+
 const main = 'main_selected_link';
 const secondary = 'secondary_selected_link';
 var userMessages = [];
 var chatBotMessages = [];
+var forums = [{'title': 'I am atractive?', 'description': 'Hi, i am a ugly', 'upvote': 0, 'downvote': 0}]
+
 
 function changeToSecondary(str) {
     pages = {
@@ -75,25 +78,9 @@ app.get('/advice', (req, res) => {
 
 app.get('/community', (req, res) => {
     changeToSecondary('community');
-    res.render('community', { pages, pageName, forums: forumData });
+    res.render('community', { pages, pageName, forums});
 });
 
-//vote
-app.post('/vote', (req, res) => {
-    const { forumId, voteType } = req.body;
-
-    const forum = forumData.find((f) => f.id === forumId);
-    if (forum) {
-        if (voteType === 'upvote') {
-            forum.upvotes++;
-        } else if (voteType === 'downvote') {
-            forum.downvotes++;
-        }
-        res.json({ upvotes: forum.upvotes, downvotes: forum.downvotes });
-    } else {
-        res.status(404).send('Forum not found');
-    }
-});
 
 app.get('/map', (req, res) => {
     changeToSecondary('map');
@@ -104,6 +91,37 @@ app.get('/chatbot', (req, res) => {
     changeToSecondary('chatbot');
     res.render('chatbot', { pages, pageName });
 });
+
+
+app.get('/forum', (req, res) => {
+    changeToSecondary('chatbot');
+    res.render('forum', { pages, pageName });
+});
+
+
+app.post('/upvote/:index', (req, res) => {
+    var index = req.params.index;
+    forums[index].upvote++;
+    res.redirect('/community');
+});
+
+app.post('/downvote/:index', (req, res) => {
+    var index = req.params.index;
+    forums[index].downvote++;
+    res.redirect('/community');
+});
+
+
+app.post('/add_forum', (req, res) => {
+
+    var title = req.body.title;
+    var description = req.body.description;
+
+    forums.push({'title': title, 'description': description, 'upvote': 0, 'downvote': 0})
+    
+    res.render('community', { pages, pageName, forums});
+});
+
 
 app.post('/chat', async (req, res) => {
     const userMessage = req.body.message;

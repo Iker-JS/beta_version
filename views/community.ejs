@@ -1,33 +1,39 @@
 <%- include("partials/header"); -%>
 
 <main>
-  <div class="content_box">
-    <% forums.forEach(forum => { %>
-      <h1>Forum <%= forum.id %></h1>
-      <h2><%= forum.title %></h2>
-      <p>Details about the forum...</p>
-      <div>
-        <button onclick="vote(<%= forum.id %>, 'upvote')">Upvote</button>
-        <span id="upvotes-<%= forum.id %>"><%= forum.upvotes %></span>
-        <button onclick="vote(<%= forum.id %>, 'downvote')">Downvote</button>
-        <span id="downvotes-<%= forum.id %>"><%= forum.downvotes %></span>
-      </div>
-      <hr>
-    <% }) %>
-  </div>
+    <div class="content_box">
+
+
+            <% if(locals.forums.length) { %>
+                
+                <% forums.forEach((forum, index) => { %>
+                    <div class="forum">
+                        <form action="/upvote/<%= index %>" method="post">
+                            <h2><%= forum.title %></h2>
+                            <p><%= forum.description %></p>
+                            
+                            <button name="button_upvote" class="btn btn-warning">Upvote</button>
+                            <span><%= forum.upvote %></span>
+                        </form>
+                        
+                        <form action="/downvote/<%= index %>" method="post">
+                            <button name="button_downvote" class="btn btn-warning">Downvote</button>
+                            <span><%= forum.downvote %></span>
+                        </form>
+                    </div>
+                    <hr>              
+
+                <% }) %>
+                
+
+            <% } %>
+
+            <form action="/forum" method="get">
+                <button name="button_forum" class="btn btn-success">Add forum</button>
+            </form>
+                        
+    </div>
 </main>
 
-<script>
-  async function vote(forumId, voteType) {
-    const response = await fetch('/vote', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ forumId, voteType })
-    });
-    const data = await response.json();
-    document.getElementById(`upvotes-${forumId}`).innerText = data.upvotes;
-    document.getElementById(`downvotes-${forumId}`).innerText = data.downvotes;
-  }
-</script>
 
 <%- include("partials/footer"); -%>
