@@ -8,18 +8,17 @@ const genAI = new GoogleGenerativeAI(process.env.CREDENTIAL);
 //Data del vote
 const forumData = [
     { id: 1, title: 'Idea for an event', upvotes: 0, downvotes: 0 },
-    { id: 2, title: 'Do you think I am ugly?', upvotes: 0, downvotes: 0 }
-  ];
-  
+    { id: 2, title: 'Do you think I am ugly?', upvotes: 0, downvotes: 0 },
+];
+
 const model = genAI.getGenerativeModel({
     model: 'gemini-1.5-flash',
     generationConfig: {
         responseMimeType: 'text/plain',
         maxOutputTokens: 1000,
         temperature: 0.05,
-    },  
+    },
 });
-
 
 app.use(bodyParser.json());
 
@@ -35,8 +34,6 @@ const main = 'main_selected_link';
 const secondary = 'secondary_selected_link';
 var userMessages = [];
 var chatBotMessages = [];
-
-
 
 function changeToSecondary(str) {
     pages = {
@@ -58,7 +55,7 @@ function changeToSecondary(str) {
 
 app.route('/').get((req, res) => {
     changeToSecondary('home');
-    res.render('home', { pages, pageName});
+    res.render('home', { pages, pageName });
 });
 
 app.get('/general', (req, res) => {
@@ -84,19 +81,19 @@ app.get('/community', (req, res) => {
 //vote
 app.post('/vote', (req, res) => {
     const { forumId, voteType } = req.body;
-  
-    const forum = forumData.find(f => f.id === forumId);
+
+    const forum = forumData.find((f) => f.id === forumId);
     if (forum) {
-      if (voteType === 'upvote') {
-        forum.upvotes++;
-      } else if (voteType === 'downvote') {
-        forum.downvotes++;
-      }
-      res.json({ upvotes: forum.upvotes, downvotes: forum.downvotes });
+        if (voteType === 'upvote') {
+            forum.upvotes++;
+        } else if (voteType === 'downvote') {
+            forum.downvotes++;
+        }
+        res.json({ upvotes: forum.upvotes, downvotes: forum.downvotes });
     } else {
-      res.status(404).send("Forum not found");
+        res.status(404).send('Forum not found');
     }
-  });
+});
 
 app.get('/map', (req, res) => {
     changeToSecondary('map');
@@ -108,15 +105,12 @@ app.get('/chatbot', (req, res) => {
     res.render('chatbot', { pages, pageName });
 });
 
-
 app.post('/chat', async (req, res) => {
-
     const userMessage = req.body.message;
 
     if (userMessage.replaceAll(' ', '')) {
-        
         userMessages.push(userMessage);
-        
+
         chatHistory += `Usuario: ${userMessage}\n`;
 
         const result = await model.generateContent(chatHistory);
@@ -127,15 +121,23 @@ app.post('/chat', async (req, res) => {
 
         changeToSecondary('chatbot');
 
-        res.render('chatbot', { pages, pageName, chatBotMessages, userMessages, error: false});
-    }else{
-        res.render('chatbot', { pages, pageName, chatBotMessages, userMessages, error: true});
-        
+        res.render('chatbot', {
+            pages,
+            pageName,
+            chatBotMessages,
+            userMessages,
+            error: false,
+        });
+    } else {
+        res.render('chatbot', {
+            pages,
+            pageName,
+            chatBotMessages,
+            userMessages,
+            error: true,
+        });
     }
-    
-
 });
-
 
 app.listen(3000, () => {
     console.log('Listening at port 3000');
