@@ -1,18 +1,33 @@
 <%- include("partials/header"); -%>
 
-        <main>
+<main>
+  <div class="content_box">
+    <% forums.forEach(forum => { %>
+      <h1>Forum <%= forum.id %></h1>
+      <h2><%= forum.title %></h2>
+      <p>Details about the forum...</p>
+      <div>
+        <button onclick="vote(<%= forum.id %>, 'upvote')">Upvote</button>
+        <span id="upvotes-<%= forum.id %>"><%= forum.upvotes %></span>
+        <button onclick="vote(<%= forum.id %>, 'downvote')">Downvote</button>
+        <span id="downvotes-<%= forum.id %>"><%= forum.downvotes %></span>
+      </div>
+      <hr>
+    <% }) %>
+  </div>
+</main>
 
-            <div class="content_box">
-                <h1>Forum 1</h1>
-                <h2>Idea for an event</h2>
-                <p>Hey guys, so here's an event i have planned for saturday....</p>
-                <button type="button" class="btn btn-primary">Upvote</button>
-                <hr>
-                <h1>Forum 2</h1>
-                <h2>Do you think im ugly?</h2>
-                <p>I've always thought that i was ugly....</p>
-                <button type="button" class="btn btn-primary">Upvote</button>
-            </div>
-        </main>
+<script>
+  async function vote(forumId, voteType) {
+    const response = await fetch('/vote', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ forumId, voteType })
+    });
+    const data = await response.json();
+    document.getElementById(`upvotes-${forumId}`).innerText = data.upvotes;
+    document.getElementById(`downvotes-${forumId}`).innerText = data.downvotes;
+  }
+</script>
 
 <%- include("partials/footer"); -%>

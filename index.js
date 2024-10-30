@@ -5,14 +5,19 @@ const app = express();
 const bodyParser = require('body-parser');
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 const genAI = new GoogleGenerativeAI(process.env.CREDENTIAL);
-
+//Data del vote
+const forumData = [
+    { id: 1, title: 'Idea for an event', upvotes: 0, downvotes: 0 },
+    { id: 2, title: 'Do you think I am ugly?', upvotes: 0, downvotes: 0 }
+  ];
+  
 const model = genAI.getGenerativeModel({
     model: 'gemini-1.5-flash',
     generationConfig: {
         responseMimeType: 'text/plain',
         maxOutputTokens: 1000,
         temperature: 0.05,
-    },
+    },  
 });
 
 
@@ -73,8 +78,25 @@ app.get('/advice', (req, res) => {
 
 app.get('/community', (req, res) => {
     changeToSecondary('community');
-    res.render('community', { pages, pageName });
+    res.render('community', { pages, pageName, forums: forumData });
 });
+
+//vote
+app.post('/vote', (req, res) => {
+    const { forumId, voteType } = req.body;
+  
+    const forum = forumData.find(f => f.id === forumId);
+    if (forum) {
+      if (voteType === 'upvote') {
+        forum.upvotes++;
+      } else if (voteType === 'downvote') {
+        forum.downvotes++;
+      }
+      res.json({ upvotes: forum.upvotes, downvotes: forum.downvotes });
+    } else {
+      res.status(404).send("Forum not found");
+    }
+  });
 
 app.get('/map', (req, res) => {
     changeToSecondary('map');
@@ -118,8 +140,6 @@ app.post('/chat', async (req, res) => {
 app.listen(3000, () => {
     console.log('Listening at port 3000');
 });
-
-//COMMENT: only a comment
 
 let chatHistory =
     'Eres Amadeus, un ayudante de los usuarios con su salud mental, te encanta ayudar a las personas con temas personales o de situacion que los ponga en tristeza, usas ayudas psicologicas para ayudarlas e intentar hacerlas felices, mi inventor es Elshadowzr, un cientifico loco que le gusta el choripan';
